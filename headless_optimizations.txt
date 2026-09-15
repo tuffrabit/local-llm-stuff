@@ -1,0 +1,14 @@
+What actually matters, in order:
+
+- Build llama.cpp yourself with native flags — cmake -B build -DGGML_NATIVE=ON -DCMAKE_BUILD_TYPE=Release. This is worth more than any distro choice.
+
+- Go headless, but keep the OS. You don't need to reinstall to ditch the desktop: sudo systemctl set-default multi-user.target and stop the display manager. XFCE only costs ~300–500MB idle — trivial against 128GB — but on a dedicated box, why run it. SSH in, everything else stays exactly as configured.
+
+Runtime tuning beats distro choice:
+
+- Transparent HugePages: echo madvise | sudo tee /sys/kernel/mm/transparent_hugepage/enabled (or always for a dedicated box — llama.cpp benefits)
+
+- vm.swappiness=10 or lower — with the model resident, you never want the kernel getting cute about swapping
+
+- Optional, isolated-LAN-only: mitigations=off kernel param buys a few percent on pre-Spectre-class-era silicon like Broadwell. Your call on the security tradeoff for a home server.
+A systemd unit for llama-server — auto-start on boot, LimitMEMLOCK=infinity (solves the mlock saga permanently at the service level), restart on failure. That's what turns this from an experiment into infrastructure.

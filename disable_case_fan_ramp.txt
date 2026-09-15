@@ -1,0 +1,13 @@
+Killing the third-party PCIe fan ramp
+This is the exact feature you're hitting: 13G servers see a PCIe card without Dell thermal telemetry and default to aggressive chassis fan speeds to guarantee 55°C inlet air to the card region. Dell published an IPMI command to disable just that response — and critically, Dell's own KB says disabling it "only removes the fan response associated with the addition of a third-party PCIe card and does not compromise original thermal algorithm-based cooling needs." In other words, CPU/drive/PSU cooling stays fully automatic; only the blanket GPU-card ramp goes away.
+Setup (one time): In the iDRAC8 web UI, enable IPMI over LAN (iDRAC Settings → Network → IPMI Settings). Then from any machine on the network (or the T430 itself under Linux):
+
+# Check current status
+ipmitool -I lanplus -H <iDRAC_IP> -U <user> -P <pass> raw 0x30 0xce 0x01 0x16 0x05 0x00 0x00 0x00
+#   reply ending "01 00 00" = already disabled, "00 00 00" = enabled
+
+# Disable the third-party PCIe cooling response
+ipmitool -I lanplus -H <iDRAC_IP> -U <user> -P <pass> raw 0x30 0xce 0x00 0x16 0x05 0x00 0x00 0x00 0x05 0x00 0x01 0x00 0x00
+
+# Re-enable, if you ever want it back
+ipmitool -I lanplus -H <iDRAC_IP> -U <user> -P <pass> raw 0x30 0xce 0x00 0x16 0x05 0x00 0x00 0x00 0x05 0x00 0x00 0x00 0x00
