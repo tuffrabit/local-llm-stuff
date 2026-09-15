@@ -1,0 +1,22 @@
+numactl --interleave=0,1 ~/llm/llamacpp-builds/vulkan-2026-09-09_09-07-23/bin/llama-server \
+  -v \
+  -m ~/llm/models/MiniCPM5-2B-Q8_0.gguf \
+  --port 1234 \
+  --host 0.0.0.0 \
+  --ctx-size 65536 \
+  -t 28 \
+  -tb 28 \
+  --metrics \
+  -b 4096 \
+  -ub 2048 \
+  -ngl 999 \
+  --cache-type-k q8_0 \
+  --cache-type-v q8_0 \
+  --jinja \
+  --slot-save-path ~/llm/slots \
+  --temp 1.0 \
+  --top-k 20 \
+  --top-p 0.95 \
+  --min-p 0.0 \
+  --repeat-penalty 1.05 \
+  --presence-penalty 1.0

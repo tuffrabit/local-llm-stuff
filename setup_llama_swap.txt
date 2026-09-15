@@ -1,0 +1,41 @@
+- create file in /usr/local/bin/run-llama-swap.sh with the contents:
+
+sudo nano /usr/local/bin/run-llama-swap.sh
+
+#!/bin/bash
+
+(homedir)/llm/llama-swap/llama-swap -config (homedir)/llm/llama-swap-config.yaml
+
+- make /usr/local/bin/run-llama-swap.sh executable
+
+chmod +x /usr/local/bin/run-llama-swap.sh
+
+- create systemd service file /etc/systemd/system/run-llama-swap.service
+
+sudo nano /etc/systemd/system/run-llama-swap.service
+
+[Unit]
+Description=Run llama-swap
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/run-llama-swap.sh
+
+[Install]
+WantedBy=multi-user.target
+
+- enable and start run-llama-swap service
+
+sudo systemctl daemon-reload
+sudo systemctl enable run-llama-swap.service
+sudo systemctl start run-llama-swap.service
+
+- stop or restart the service
+
+sudo systemctl stop myscript.service
+sudo systemctl restart myscript.service
+
+- get service status
+
+sudo systemctl status myscript.service
