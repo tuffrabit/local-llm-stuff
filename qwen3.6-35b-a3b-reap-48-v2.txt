@@ -1,17 +1,17 @@
-numactl --interleave=0,1 ~/llm/llamacpp-builds/vulkan-2026-09-09_09-07-23/bin/llama-server \
-  -m ~/llm/models/Qwen3.6-35B-A3B-APEX-MTP-I-Balanced.gguf \
+numactl --interleave=0,1 ~/llm/llamacpp-builds/vulkan-2026-09-16_17-24-32/bin/llama-server \
+  -m ~/llm/models/Qwen3.6-35B-A3B-REAP-48-v2.gguf \
+  -md ~/llm/models/qwen36-35b-a3b-dflash-Q8_0.gguf \
+  --device Vulkan0 --device-draft Vulkan0 \
   --port 1234 \
   --host 0.0.0.0 \
   --ctx-size 131072 \
   -t 28 \
   -tb 28 \
   --metrics \
-  --numa distribute \
+  -ngl 999 \
+  -ngld 999 \
   -b 2048 \
-  -ub 512 \
-  -ngl 42 \
-  --n-cpu-moe 22 \
-  --override-tensor "output\.weight=Vulkan0" \
+  -ub 2048 \
   -fa on \
   --load-mode none \
   --lazy-mode off \
@@ -19,9 +19,8 @@ numactl --interleave=0,1 ~/llm/llamacpp-builds/vulkan-2026-09-09_09-07-23/bin/ll
   --cache-type-v q8_0 \
   --jinja \
   --slot-save-path ~/llm/slots \
-  --spec-type draft-mtp \
-  --spec-draft-n-max 4 \
-  --spec-draft-p-min 0.4 \
+  --spec-type draft-dflash \
+  --spec-draft-n-max 2 \
   --reasoning-budget 4096 \
   --reasoning-budget-message "\nLet's answer now.\n" \
   --temp 0.6 \

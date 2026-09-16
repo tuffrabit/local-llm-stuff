@@ -1,17 +1,14 @@
 numactl --interleave=0,1 ~/llm/llamacpp-builds/vulkan-2026-09-09_09-07-23/bin/llama-server \
-  -m ~/llm/models/Qwen3.6-35B-A3B-APEX-MTP-I-Balanced.gguf \
+  -m ~/llm/models/Qwen3.8-27B-GSQ-RCO-IQ3_S-mtp.gguf \
   --port 1234 \
   --host 0.0.0.0 \
-  --ctx-size 131072 \
+  --ctx-size 32000 \
   -t 28 \
   -tb 28 \
   --metrics \
-  --numa distribute \
+  -ngl 999 \
   -b 2048 \
   -ub 512 \
-  -ngl 42 \
-  --n-cpu-moe 22 \
-  --override-tensor "output\.weight=Vulkan0" \
   -fa on \
   --load-mode none \
   --lazy-mode off \
