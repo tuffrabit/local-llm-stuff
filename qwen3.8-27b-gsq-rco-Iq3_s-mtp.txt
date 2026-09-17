@@ -2,7 +2,7 @@ numactl --interleave=0,1 ~/llm/llamacpp-builds/vulkan-2026-09-09_09-07-23/bin/ll
   -m ~/llm/models/Qwen3.8-27B-GSQ-RCO-IQ3_S-mtp.gguf \
   --port 1234 \
   --host 0.0.0.0 \
-  --ctx-size 32000 \
+  --ctx-size 65536 \
   -t 28 \
   -tb 28 \
   --metrics \
@@ -13,7 +13,7 @@ numactl --interleave=0,1 ~/llm/llamacpp-builds/vulkan-2026-09-09_09-07-23/bin/ll
   --load-mode none \
   --lazy-mode off \
   --cache-type-k q8_0 \
-  --cache-type-v q8_0 \
+  --cache-type-v q4_0 \
   --jinja \
   --slot-save-path ~/llm/slots \
   --spec-type draft-mtp \
